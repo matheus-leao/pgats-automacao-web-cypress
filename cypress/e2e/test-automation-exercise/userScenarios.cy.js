@@ -1,16 +1,23 @@
 const { faker } = require("@faker-js/faker");
 const dayjs = require("dayjs");
 
-describe('User Tests', () => {
-    it('Create new user', () => {
-        cy.visit('/login')
-        cy.get('[data-qa="signup-name"]').type(faker.internet.username());
+
+describe('Automation Exercise', () => {
+    it('Test Case 1: Register User', () => {
+        const fakeUserName = faker.internet.username()
+        
+        cy.visit('/');
+        cy.title().should('eq', 'Automation Exercise')
+        cy.get('.fa-home').should('be.visible')
+        cy.get('a[href*="/login"]').click();
+        
+        cy.contains('h2','New User Signup!').should('be.visible')
+        cy.get('[data-qa="signup-name"]').type(fakeUserName);
         cy.get('[data-qa="signup-email"]').type(faker.internet.email());
         cy.get('[data-qa="signup-button"]').click()
         cy.contains('Enter Account Information').should('be.visible')
 
         cy.get('#id_gender1').check()
-        
         cy.get('[data-qa="password"]').type(1234, {log: false})
 
         const todayDate = dayjs(Date.now());
@@ -35,6 +42,11 @@ describe('User Tests', () => {
         cy.get('[data-qa="create-account"]').click();
 
         cy.contains('Account Created!').should('be.visible')
+        cy.get('[data-qa="continue-button"]').should('be.visible').click()
+        cy.get('a b').should('contain.text', `${fakeUserName}`)
+
+        cy.get('a[href*="/delete_account"]').click();
+        cy.contains('Account Deleted!').should('be.visible')
         cy.get('[data-qa="continue-button"]').should('be.visible')
     });
 });
