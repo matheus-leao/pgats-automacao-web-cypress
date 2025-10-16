@@ -13,40 +13,40 @@ describe('Automation Exercise', () => {
         
         cy.contains('h2','New User Signup!').should('be.visible')
         LoginPage.signupNameInput.type(fakeUserName);
-        cy.get('[data-qa="signup-email"]').type(faker.internet.email());
-        cy.get('[data-qa="signup-button"]').click()
+        LoginPage.signupEmailInput.type(faker.internet.email());
+        LoginPage.signupButton.click()
         cy.contains('Enter Account Information').should('be.visible')
 
-        cy.get('#id_gender1').check()
-        cy.get('[data-qa="password"]').type(1234, {log: false})
+        LoginPage.genderMrRadio.check()
+        LoginPage.passwordInput.type(1234, {log: false})
 
         const todayDate = dayjs(Date.now());
 
-        cy.get('#days').select(todayDate.daysInMonth());
-        cy.get('#months').select(todayDate.month());
-        cy.get('#years').select(`1997`);
+        LoginPage.daysSelect.select(todayDate.daysInMonth());
+        LoginPage.monthsSelect.select(todayDate.month());
+        LoginPage.yearsSelect.select(`1997`);
 
         //Adress information
 
-        cy.get('[data-qa="first_name"]').type('test')
-        cy.get('[data-qa="last_name"]').type('test')
-        cy.get('[data-qa="company"]').type('test')
-        cy.get('[data-qa="address"]').type('test')
-        cy.get('[data-qa="address2"]').type('test')
-        cy.get('[data-qa="country"]').select('Canada')
-        cy.get('[data-qa="state"]').type('Quebec')
-        cy.get('[data-qa="city"]').type('Montreal')
-        cy.get('[data-qa="zipcode"]').type('000000')
-        cy.get('[data-qa="mobile_number"]').type('00000000')
+        LoginPage.firstNameInput.type('test')
+        LoginPage.lastNameInput.type('test')
+        LoginPage.companyInput.type('test')
+        LoginPage.addressInput.type('test')
+        LoginPage.address2Input.type('test')
+        LoginPage.countrySelect.select('Canada')
+        LoginPage.stateInput.type('Quebec')
+        LoginPage.cityInput.type('Montreal')
+        LoginPage.zipcodeInput.type('000000')
+        LoginPage.mobileNumberInput.type('00000000')
 
-        cy.get('[data-qa="create-account"]').click();
+        LoginPage.createAccountButton.click();
 
         cy.contains('Account Created!').should('be.visible')
-        cy.get('[data-qa="continue-button"]').should('be.visible').click()
+        LoginPage.continueButton.should('be.visible').click()
         cy.get('a b').should('contain.text', `${fakeUserName}`)
 
-        cy.get('a[href*="/delete_account"]').click();
+        LoginPage.deleteAccountButton.click();
         cy.contains('Account Deleted!').should('be.visible')
-        cy.get('[data-qa="continue-button"]').should('be.visible')
+        LoginPage.continueButton.should('be.visible')
     });
 });
