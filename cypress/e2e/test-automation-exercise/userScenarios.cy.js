@@ -1,18 +1,18 @@
 const { faker } = require("@faker-js/faker");
 const dayjs = require("dayjs");
-
+import { HomePage } from "../../support/page-objects/homePage";
+import { LoginPage } from "../../support/page-objects/loginPage";
 
 describe('Automation Exercise', () => {
     it('Test Case 1: Register User', () => {
         const fakeUserName = faker.internet.username()
         
-        cy.visit('/');
-        cy.title().should('eq', 'Automation Exercise')
-        cy.get('.fa-home').should('be.visible')
-        cy.get('a[href*="/login"]').click();
+        cy.visit('/').title().should('eq', 'Automation Exercise')
+        HomePage.homePageLabel.should('be.visible')
+        HomePage.loginButton.click();
         
         cy.contains('h2','New User Signup!').should('be.visible')
-        cy.get('[data-qa="signup-name"]').type(fakeUserName);
+        LoginPage.signupNameInput.type(fakeUserName);
         cy.get('[data-qa="signup-email"]').type(faker.internet.email());
         cy.get('[data-qa="signup-button"]').click()
         cy.contains('Enter Account Information').should('be.visible')
