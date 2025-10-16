@@ -12,10 +12,11 @@
   "type": "commonjs",
   "devDependencies": {
     "@faker-js/faker": "^10.0.0",
-    "cypress-mochawesome-reporter": "^4.0.2"
+    "cypress-mochawesome-reporter": "^4.0.2",
+    "cypress-xpath": "^2.0.1",
+    "prettier": "3.6.2"
   },
   "dependencies": {
-    "dayjs": "^1.11.18",
-    "prettier": "^3.6.2"
+    "dayjs": "^1.11.18"
   }
 }
