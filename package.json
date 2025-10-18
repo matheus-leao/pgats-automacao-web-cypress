@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx cypress run --headless"
+    "test": "npx cypress run --headless",
+    "cy:open": "npx cypress open",
+    "prettier": "npx prettier --write ."
   },
   "keywords": [],
   "author": "",
