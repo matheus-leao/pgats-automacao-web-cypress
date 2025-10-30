@@ -1,9 +1,10 @@
-const { faker } = require("@faker-js/faker");
+const { faker, it } = require("@faker-js/faker");
 const dayjs = require("dayjs");
-import { HomePage } from "../../support/page-objects/homePage";
-import { LoginPage } from "../../support/page-objects/loginPage";
+import { HomePage } from "../../../support/page-objects/homePage";
+import { LoginPage } from "../../../support/page-objects/loginPage";
 
 describe("Automation Exercise", () => {
+
   it("Test Case 1: Register User", () => {
     const fakeUserName = faker.internet.username();
 
@@ -49,4 +50,29 @@ describe("Automation Exercise", () => {
     cy.contains("Account Deleted!").should("be.visible");
     LoginPage.continueButton.should("be.visible");
   });
+
+  it("Test Case 2: Login User with correct email and password", () => {
+    
+      cy.visit("/");
+      HomePage.loginButton.click();
+
+      cy.contains("Login to your account").should("be.visible");
+      LoginPage.loginEmailInput.type(newUser.email);
+      LoginPage.loginPasswordInput.type("1234", { log: false });
+      LoginPage.loginButton.click();
+
+      cy.get("a b").should("contain.text", `${newUser.name}`);
+
+      LoginPage.deleteAccountButton.click();
+      cy.contains("Account Deleted!").should("be.visible");
+      LoginPage.continueButton.should("be.visible");
+  });
+  it("Test Case 3: ", () => {});
+  it("Test Case 4: ", () => {});
+  it("Test Case 5: ", () => {});
+  it("Test Case 6: ", () => {});
+  it("Test Case 8: ", () => {});
+  it("Test Case 9: ", () => {});
+  it("Test Case 10: ", () => {});
+  it("Test Case 15: ", () => {});
 });
