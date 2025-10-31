@@ -26,12 +26,12 @@
 
 const { faker } = require("@faker-js/faker");
 
-Cypress.Commands.add('createUser', () => { 
+Cypress.Commands.add("createUser", () => {
   const newUser = {
     name: faker.internet.username(),
     email: faker.internet.email(),
     password: "1234",
-    title: 'Mr',
+    title: "Mr",
     birthDate_day: faker.date.birthdate().getDate(),
     birthDate_month: faker.date.birthdate().getMonth() + 1,
     birthDate_year: faker.date.birthdate().getFullYear(),
@@ -44,14 +44,15 @@ Cypress.Commands.add('createUser', () => {
     state: faker.location.state(),
     city: faker.location.city(),
     zipcode: faker.location.zipCode(),
-    mobileNumber: faker.phone.number()
+    mobileNumber: faker.phone.number(),
   };
 
-  return cy.request({
+  return cy
+    .request({
       url: `https://automationexercise.com/api/createAccount`,
       method: "POST",
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       form: true, // This ensures Cypress sends the data as form-urlencoded
       body: {
@@ -71,13 +72,17 @@ Cypress.Commands.add('createUser', () => {
         zipcode: newUser.zipcode,
         state: newUser.state,
         city: newUser.city,
-        mobile_number: newUser.mobileNumber
-      }
-    }).then((response) => {
+        mobile_number: newUser.mobileNumber,
+      },
+    })
+    .then((response) => {
       expect(response.status).to.eq(200);
       // response.body is a JSON string in this API response, parse it before assertions
-      const parsedBody = typeof response.body === 'string' ? JSON.parse(response.body) : response.body;
+      const parsedBody =
+        typeof response.body === "string"
+          ? JSON.parse(response.body)
+          : response.body;
       expect(parsedBody.responseCode).to.eq(201);
       return newUser;
-    })
+    });
 });

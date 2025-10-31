@@ -7,7 +7,6 @@ import { ContactUsPage } from "../../../support/page-objects/contactUsPage";
 let userData = {};
 
 describe("Automation Exercise", () => {
-
   beforeEach(() => {
     cy.createUser().then((user) => {
       userData = user;
@@ -62,19 +61,19 @@ describe("Automation Exercise", () => {
   });
 
   it("Test Case 2: Login User with correct email and password", () => {
-      cy.visit("/");
-      HomePage.loginButton.click();
+    cy.visit("/");
+    HomePage.loginButton.click();
 
-      cy.contains("Login to your account").should("be.visible");
-      LoginPage.loginEmailInput.type(userData.email);
-      LoginPage.loginPasswordInput.type(userData.password, { log: false });
-      LoginPage.loginButton.click();
+    cy.contains("Login to your account").should("be.visible");
+    LoginPage.loginEmailInput.type(userData.email);
+    LoginPage.loginPasswordInput.type(userData.password, { log: false });
+    LoginPage.loginButton.click();
 
-      cy.get("a b").should("contain.text", `${userData.name}`);
+    cy.get("a b").should("contain.text", `${userData.name}`);
 
-      LoginPage.deleteAccountButton.click();
-      cy.contains("Account Deleted!").should("be.visible");
-      LoginPage.continueButton.should("be.visible");
+    LoginPage.deleteAccountButton.click();
+    cy.contains("Account Deleted!").should("be.visible");
+    LoginPage.continueButton.should("be.visible");
   });
 
   it("Test Case 3: Login User with incorrect email and password", () => {
@@ -82,12 +81,14 @@ describe("Automation Exercise", () => {
     HomePage.loginButton.click();
 
     cy.contains("Login to your account").should("be.visible");
-      LoginPage.loginEmailInput.type('fake@example.com');
-      LoginPage.loginPasswordInput.type('fakePassword', { log: false });
-      LoginPage.loginButton.click();
+    LoginPage.loginEmailInput.type("fake@example.com");
+    LoginPage.loginPasswordInput.type("fakePassword", { log: false });
+    LoginPage.loginButton.click();
 
-      cy.get('form').should("contain.text", `Your email or password is incorrect!`);
-
+    cy.get("form").should(
+      "contain.text",
+      `Your email or password is incorrect!`,
+    );
   });
 
   it("Test Case 4: Logout User", () => {
@@ -114,8 +115,7 @@ describe("Automation Exercise", () => {
     LoginPage.signupNameInput.type(userData.name);
     LoginPage.signupEmailInput.type(userData.email);
     LoginPage.signupButton.click();
-    cy.get('form').should("contain.text", `Email Address already exist!`);
-
+    cy.get("form").should("contain.text", `Email Address already exist!`);
   });
   it("Test Case 6: Contact Us Form", () => {
     cy.visit(`/contact_us`);
