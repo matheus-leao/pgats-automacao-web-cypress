@@ -104,7 +104,16 @@ describe("Automation Exercise", () => {
     cy.contains("Login to your account").should("be.visible");
   });
 
-  it("Test Case 5: Register User with existing email", () => {
+  it.only("Test Case 5: Register User with existing email", () => {
+    cy.visit("/").title().should("eq", "Automation Exercise");
+    HomePage.homePageLabel.should("be.visible");
+    HomePage.loginButton.click();
+
+    cy.contains("h2", "New User Signup!").should("be.visible");
+    LoginPage.signupNameInput.type(userData.name);
+    LoginPage.signupEmailInput.type(userData.email);
+    LoginPage.signupButton.click();
+    cy.get('form').should("contain.text", `Email Address already exist!`);
 
   });
   it("Test Case 6: Contact Us Form", () => {});
