@@ -104,7 +104,7 @@ describe("Automation Exercise", () => {
     cy.contains("Login to your account").should("be.visible");
   });
 
-  it.only("Test Case 5: Register User with existing email", () => {
+  it("Test Case 5: Register User with existing email", () => {
     cy.visit("/").title().should("eq", "Automation Exercise");
     HomePage.homePageLabel.should("be.visible");
     HomePage.loginButton.click();
@@ -116,7 +116,20 @@ describe("Automation Exercise", () => {
     cy.get('form').should("contain.text", `Email Address already exist!`);
 
   });
-  it("Test Case 6: Contact Us Form", () => {});
+  it("Test Case 6: Contact Us Form", () => {
+    cy.visit(`/contact_us`);
+
+    cy.get('[data-qa="name"]').type(faker.person.fullName());
+    cy.get('[data-qa="email"]').type(faker.internet.email());
+    cy.get('[data-qa="subject"]').type(faker.word.words());
+
+    cy.fixture("arara.jpg").as(`arquivo`);
+    cy.get(`input[type*="file"]`).selectFile(`@arquivo`);
+
+    cy.get(`[data-qa="submit-button"]`).click();
+
+    cy.get(".alert-success").should("be.visible");
+  });
   it("Test Case 8: Verify All Products and product detail page", () => {});
   it("Test Case 9: Search Product", () => {});
   it("Test Case 10: Verify Subscription in home page", () => {});
