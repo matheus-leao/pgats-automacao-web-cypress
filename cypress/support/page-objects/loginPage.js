@@ -68,4 +68,14 @@ export class LoginPage {
   static get deleteAccountButton() {
     return cy.get('a[href*="/delete_account"]');
   }
+  
+  static get loginEmailInput() {
+    return cy.get('[data-qa="login-email"]');
+  }
+  static get loginPasswordInput() {
+    return cy.get('[data-qa="login-password"]');
+  }
+  static get loginButton() {
+    return cy.get('[data-qa="login-button"]');
+  }
 }

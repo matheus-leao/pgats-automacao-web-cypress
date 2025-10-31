@@ -7,10 +7,10 @@ let userData = {};
 
 describe("Automation Exercise", () => {
 
-  beforeEach(() => {
+  before(() => {
     cy.createUser().then((user) => {
       userData = user;
-      cy.log(`Created user: ${JSON.stringify(userData)}`);
+      cy.log(`User created!`);
     });
   });
 
@@ -59,15 +59,14 @@ describe("Automation Exercise", () => {
     cy.contains("Account Deleted!").should("be.visible");
     LoginPage.continueButton.should("be.visible");
   });
-  
+
   it.only("Test Case 2: Login User with correct email and password", () => {
       cy.visit("/");
       HomePage.loginButton.click();
-      cy.pause();
 
       cy.contains("Login to your account").should("be.visible");
       LoginPage.loginEmailInput.type(userData.email);
-      LoginPage.loginPasswordInput.type("1234", { log: false });
+      LoginPage.loginPasswordInput.type(userData.password, { log: false });
       LoginPage.loginButton.click();
 
       cy.get("a b").should("contain.text", `${userData.name}`);
@@ -77,7 +76,19 @@ describe("Automation Exercise", () => {
       LoginPage.continueButton.should("be.visible");
   });
 
-  it("Test Case 3: ", () => {});
+  it.only("Test Case 3: ", () => {
+    cy.visit("/");
+    HomePage.loginButton.click();
+
+    cy.contains("Login to your account").should("be.visible");
+      LoginPage.loginEmailInput.type('fake@example.com');
+      LoginPage.loginPasswordInput.type('fakePassword', { log: false });
+      LoginPage.loginButton.click();
+
+      cy.get("a b").should("contain.text", `Your email or password is incorrect!`);
+
+  });
+  
   it("Test Case 4: ", () => {});
   it("Test Case 5: ", () => {});
   it("Test Case 6: ", () => {});
