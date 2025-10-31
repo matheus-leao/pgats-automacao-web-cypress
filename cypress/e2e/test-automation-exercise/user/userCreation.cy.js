@@ -2,6 +2,7 @@ const { faker } = require("@faker-js/faker");
 const dayjs = require("dayjs");
 import { HomePage } from "../../../support/page-objects/homePage";
 import { LoginPage } from "../../../support/page-objects/loginPage";
+import { ContactUsPage } from "../../../support/page-objects/contactUsPage";
 
 let userData = {};
 
@@ -119,16 +120,15 @@ describe("Automation Exercise", () => {
   it("Test Case 6: Contact Us Form", () => {
     cy.visit(`/contact_us`);
 
-    cy.get('[data-qa="name"]').type(faker.person.fullName());
-    cy.get('[data-qa="email"]').type(faker.internet.email());
-    cy.get('[data-qa="subject"]').type(faker.word.words());
+    ContactUsPage.nameInput.type(faker.person.fullName());
+    ContactUsPage.emailInput.type(faker.internet.email());
+    ContactUsPage.subjectInput.type(faker.word.words());
 
     cy.fixture("arara.jpg").as(`arquivo`);
-    cy.get(`input[type*="file"]`).selectFile(`@arquivo`);
+    ContactUsPage.fileUploadInput.selectFile(`@arquivo`);
+    ContactUsPage.submitButton.click();
 
-    cy.get(`[data-qa="submit-button"]`).click();
-
-    cy.get(".alert-success").should("be.visible");
+    ContactUsPage.successMessage.should("be.visible");
   });
   it("Test Case 8: Verify All Products and product detail page", () => {});
   it("Test Case 9: Search Product", () => {});
