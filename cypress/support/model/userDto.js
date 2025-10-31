@@ -1,0 +1,19 @@
+export class UserDto {
+  name;
+  email;
+  password;
+  title;
+  birthDate_day;
+  birthDate_month;
+  birthDate_year;
+  firstName;
+  lastName;
+  company;
+  address;
+  address2;
+  country;
+  state;
+  city;
+  zipcode;
+  mobileNumber;
+}

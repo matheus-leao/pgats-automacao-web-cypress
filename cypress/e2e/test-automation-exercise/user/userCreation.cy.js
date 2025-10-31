@@ -1,9 +1,18 @@
-const { faker, it } = require("@faker-js/faker");
+const { faker } = require("@faker-js/faker");
 const dayjs = require("dayjs");
 import { HomePage } from "../../../support/page-objects/homePage";
 import { LoginPage } from "../../../support/page-objects/loginPage";
 
+let userData = {};
+
 describe("Automation Exercise", () => {
+
+  beforeEach(() => {
+    cy.createUser().then((user) => {
+      userData = user;
+      cy.log(`Created user: ${JSON.stringify(userData)}`);
+    });
+  });
 
   it("Test Case 1: Register User", () => {
     const fakeUserName = faker.internet.username();
@@ -50,23 +59,24 @@ describe("Automation Exercise", () => {
     cy.contains("Account Deleted!").should("be.visible");
     LoginPage.continueButton.should("be.visible");
   });
-
-  it("Test Case 2: Login User with correct email and password", () => {
-    
+  
+  it.only("Test Case 2: Login User with correct email and password", () => {
       cy.visit("/");
       HomePage.loginButton.click();
+      cy.pause();
 
       cy.contains("Login to your account").should("be.visible");
-      LoginPage.loginEmailInput.type(newUser.email);
+      LoginPage.loginEmailInput.type(userData.email);
       LoginPage.loginPasswordInput.type("1234", { log: false });
       LoginPage.loginButton.click();
 
-      cy.get("a b").should("contain.text", `${newUser.name}`);
+      cy.get("a b").should("contain.text", `${userData.name}`);
 
       LoginPage.deleteAccountButton.click();
       cy.contains("Account Deleted!").should("be.visible");
       LoginPage.continueButton.should("be.visible");
   });
+
   it("Test Case 3: ", () => {});
   it("Test Case 4: ", () => {});
   it("Test Case 5: ", () => {});
