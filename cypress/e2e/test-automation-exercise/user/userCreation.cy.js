@@ -7,7 +7,7 @@ let userData = {};
 
 describe("Automation Exercise", () => {
 
-  before(() => {
+  beforeEach(() => {
     cy.createUser().then((user) => {
       userData = user;
       cy.log(`User created!`);
@@ -60,7 +60,7 @@ describe("Automation Exercise", () => {
     LoginPage.continueButton.should("be.visible");
   });
 
-  it.only("Test Case 2: Login User with correct email and password", () => {
+  it("Test Case 2: Login User with correct email and password", () => {
       cy.visit("/");
       HomePage.loginButton.click();
 
@@ -76,7 +76,7 @@ describe("Automation Exercise", () => {
       LoginPage.continueButton.should("be.visible");
   });
 
-  it.only("Test Case 3: ", () => {
+  it("Test Case 3: Login User with incorrect email and password", () => {
     cy.visit("/");
     HomePage.loginButton.click();
 
@@ -85,15 +85,31 @@ describe("Automation Exercise", () => {
       LoginPage.loginPasswordInput.type('fakePassword', { log: false });
       LoginPage.loginButton.click();
 
-      cy.get("a b").should("contain.text", `Your email or password is incorrect!`);
+      cy.get('form').should("contain.text", `Your email or password is incorrect!`);
 
   });
-  
-  it("Test Case 4: ", () => {});
-  it("Test Case 5: ", () => {});
-  it("Test Case 6: ", () => {});
-  it("Test Case 8: ", () => {});
-  it("Test Case 9: ", () => {});
-  it("Test Case 10: ", () => {});
-  it("Test Case 15: ", () => {});
+
+  it("Test Case 4: Logout User", () => {
+    cy.visit("/");
+    HomePage.loginButton.click();
+
+    cy.contains("Login to your account").should("be.visible");
+    LoginPage.loginEmailInput.type(userData.email);
+    LoginPage.loginPasswordInput.type(userData.password, { log: false });
+    LoginPage.loginButton.click();
+
+    cy.get("a b").should("contain.text", `${userData.name}`);
+
+    HomePage.logoutButton.click();
+    cy.contains("Login to your account").should("be.visible");
+  });
+
+  it("Test Case 5: Register User with existing email", () => {
+
+  });
+  it("Test Case 6: Contact Us Form", () => {});
+  it("Test Case 8: Verify All Products and product detail page", () => {});
+  it("Test Case 9: Search Product", () => {});
+  it("Test Case 10: Verify Subscription in home page", () => {});
+  it("Test Case 15: Place Order: Register before Checkout", () => {});
 });
