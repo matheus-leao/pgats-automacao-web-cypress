@@ -18,4 +18,17 @@ export class HomePage {
   static get productsButton() {
     return cy.get('a[href*="/products"]');
   }
+
+  static get subscriptionInput() {
+    return cy.get("#susbscribe_email");
+  }
+
+  static get subscriptionButton() {
+    return cy.get("#subscribe");
+  }
+
+  static get successSubscriptionMessage() {
+    return cy.get(".alert-success");
+  }
+  
 }

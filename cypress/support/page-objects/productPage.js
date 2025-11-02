@@ -19,6 +19,10 @@ export class ProductPage {
     return cy.get(`a[href*="/product_details/${productId}"]`);
   }
 
+  static addToCartButtonByProductId(productId) {
+    return cy.get(`a[data-product-id="${productId}"]`);
+  }
+
   static get searchProductInput() {
     return cy.get("#search_product");
   }

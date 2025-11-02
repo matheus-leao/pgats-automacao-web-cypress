@@ -63,14 +63,7 @@ describe("Automation Exercise", () => {
 
   it("Test Case 2: Login User with correct email and password", () => {
     cy.visit("/");
-    HomePage.loginButton.click();
-
-    cy.contains("Login to your account").should("be.visible");
-    LoginPage.loginEmailInput.type(userData.email);
-    LoginPage.loginPasswordInput.type(userData.password, { log: false });
-    LoginPage.loginButton.click();
-
-    cy.get("a b").should("contain.text", `${userData.name}`);
+    loginWithExistentUser(userData);
 
     LoginPage.deleteAccountButton.click();
     cy.contains("Account Deleted!").should("be.visible");
@@ -94,14 +87,7 @@ describe("Automation Exercise", () => {
 
   it("Test Case 4: Logout User", () => {
     cy.visit("/");
-    HomePage.loginButton.click();
-
-    cy.contains("Login to your account").should("be.visible");
-    LoginPage.loginEmailInput.type(userData.email);
-    LoginPage.loginPasswordInput.type(userData.password, { log: false });
-    LoginPage.loginButton.click();
-
-    cy.get("a b").should("contain.text", `${userData.name}`);
+    loginWithExistentUser(userData);
 
     HomePage.logoutButton.click();
     cy.contains("Login to your account").should("be.visible");
@@ -160,6 +146,59 @@ describe("Automation Exercise", () => {
       ProductPage.verifyProductDetails(menTshirt);
     });
   });
-  it("Test Case 10: Verify Subscription in home page", () => {});
-  it("Test Case 15: Place Order: Register before Checkout", () => {});
+  
+  it("Test Case 10: Verify Subscription in home page", () => {
+     cy.visit("/");
+     cy.get("#footer").scrollIntoView();
+     HomePage.subscriptionInput.type(faker.internet.email());
+     HomePage.subscriptionButton.click();
+     HomePage.successSubscriptionMessage.should("be.visible");
+  });
+
+  it.only("Test Case 15: Place Order: Register before Checkout", () => {
+    cy.visit("/");
+    loginWithExistentUser(userData);
+
+    HomePage.productsButton.click();
+    cy.fixture("product/menTshirt.json").then((menTshirt) => {
+      ProductPage.searchProductInput.type(menTshirt.name);
+      ProductPage.submitSearch.click();
+      ProductPage.addToCartButtonByProductId(menTshirt.id).first().scrollIntoView().click();
+      cy.get(`#cartModal`).should("be.visible");
+      cy.contains("View Cart").click();
+      cy.get(`.check_out`).click();
+      
+      //verify address details
+      cy.get(`.address_delivery`).within(() => {
+        cy.get(".address_firstname").should("contain.text", userData.firstName);
+        cy.get(".address_lastname").should("contain.text", userData.lastName);
+        cy.get(".address_address1").should("contain.text", userData.address);
+        cy.get(".address_address2").should("contain.text", userData.address2);
+        cy.get(".address_city").should("contain.text", userData.city);
+        cy.get(".address_state").should("contain.text", userData.state);
+        cy.get(".address_country").should("contain.text", userData.country);
+        cy.get(".address_zipcode").should("contain.text", userData.zipcode);
+        cy.get(".address_mobile").should("contain.text", userData.mobileNumber);
+      });
+
+      //order details   
+
+//       13. Enter description in comment text area and click 'Place Order'
+      // 14. Enter payment details: Name on Card, Card Number, CVC, Expiration date
+      // 15. Click 'Pay and Confirm Order' button
+      // 16. Verify success message 'Your order has been placed successfully!'
+      // 17. Click 'Delete Account' button
+      // 18. Verify 'ACCOUNT DELETED!' and click 'Continue' button
+    });
+  });
 });
+
+
+const loginWithExistentUser = (user) => {
+  HomePage.loginButton.click();
+  cy.contains("Login to your account").should("be.visible");
+  LoginPage.loginEmailInput.type(user.email);
+  LoginPage.loginPasswordInput.type(user.password, { log: false });
+  LoginPage.loginButton.click();
+  cy.get("a b").should("contain.text", `${user.name}`);
+}
