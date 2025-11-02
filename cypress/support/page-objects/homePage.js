@@ -14,4 +14,8 @@ export class HomePage {
   static get deleteAccountButton() {
     return cy.get('a[href*="/delete_account"]');
   }
+
+  static get productsButton() {
+    return cy.get('a[href*="/products"]');
+  }
 }

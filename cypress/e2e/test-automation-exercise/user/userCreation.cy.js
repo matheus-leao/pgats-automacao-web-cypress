@@ -3,6 +3,7 @@ const dayjs = require("dayjs");
 import { HomePage } from "../../../support/page-objects/homePage";
 import { LoginPage } from "../../../support/page-objects/loginPage";
 import { ContactUsPage } from "../../../support/page-objects/contactUsPage";
+import { ProductPage } from "../../../support/page-objects/productPage";
 
 let userData = {};
 
@@ -117,6 +118,7 @@ describe("Automation Exercise", () => {
     LoginPage.signupButton.click();
     cy.get("form").should("contain.text", `Email Address already exist!`);
   });
+
   it("Test Case 6: Contact Us Form", () => {
     cy.visit(`/contact_us`);
 
@@ -130,8 +132,34 @@ describe("Automation Exercise", () => {
 
     ContactUsPage.successMessage.should("be.visible");
   });
-  it("Test Case 8: Verify All Products and product detail page", () => {});
-  it("Test Case 9: Search Product", () => {});
+
+  it("Test Case 8: Verify All Products and product detail page", () => {
+    cy.visit("/");
+    HomePage.productsButton.click();
+    ProductPage.allProductsTitle.should("contain.text", "All Products");
+
+    ProductPage.productImageWrapper.first().should("be.visible");
+
+    ProductPage.firstProductDetailButton.first().click();
+    ProductPage.productInformation.should("be.visible");
+
+    cy.fixture("product/blueTop.json").then((blueTop) => {
+      ProductPage.verifyProductDetails(blueTop);
+    });
+  });
+
+  it("Test Case 9: Search Product", () => {
+    cy.visit("/");
+    HomePage.productsButton.click();
+    ProductPage.allProductsTitle.should("contain.text", "All Products");
+    cy.fixture("product/menTshirt.json").then((menTshirt) => {
+      ProductPage.searchProductInput.type(menTshirt.name);
+      ProductPage.submitSearch.click();
+      ProductPage.productDetailButtonByProductId(menTshirt.id).click();
+      ProductPage.productInformation.should("be.visible");
+      ProductPage.verifyProductDetails(menTshirt);
+    });
+  });
   it("Test Case 10: Verify Subscription in home page", () => {});
   it("Test Case 15: Place Order: Register before Checkout", () => {});
 });
