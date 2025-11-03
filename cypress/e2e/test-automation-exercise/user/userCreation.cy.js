@@ -6,6 +6,7 @@ import { ContactUsPage } from "../../../support/page-objects/contactUsPage";
 import { ProductPage } from "../../../support/page-objects/productPage";
 import { ModalPage } from "../../../support/page-objects/modalPage";
 import { CheckoutPage } from "../../../support/page-objects/checkoutPage";
+import { PaymentPage } from "../../../support/page-objects/paymentPage";
 
 let userData = {};
 
@@ -157,7 +158,7 @@ describe("Automation Exercise", () => {
      HomePage.successSubscriptionMessage.should("be.visible");
   });
 
-  it.only("Test Case 15: Place Order: Register before Checkout", () => {
+  it("Test Case 15: Place Order: Register before Checkout", () => {
     cy.visit("/");
     loginWithExistentUser(userData);
 
@@ -168,7 +169,6 @@ describe("Automation Exercise", () => {
       ProductPage.addToCartButtonByProductId(menTshirt.id).first().scrollIntoView().click();
       ModalPage.cartModal.should("be.visible");
       ModalPage.viewCartButton.click();
-      cy.pause();
       CheckoutPage.checkoutButton.click();
 
       //verify address details
@@ -192,17 +192,16 @@ describe("Automation Exercise", () => {
       CheckoutPage.orderMessageTextarea.type("Please deliver between 9 AM to 5 PM");
       CheckoutPage.checkoutButton.click();
 
-      cy.get(`.heading`).should("contain.text", "Payment");
+      PaymentPage.paymentTitle.should("contain.text", "Payment");
 
-      cy.get(`[data-qa="name-on-card"]`).type("John Doe");
-      cy.get(`[data-qa="card-number"]`).type("4111111111111111");
-      cy.get(`[data-qa="cvc"]`).type("123");
-      cy.get(`[data-qa="expiry-month"]`).type("12");
-      cy.get(`[data-qa="expiry-year"]`).type("25");
+      PaymentPage.nameOnCardInput.type("John Doe");
+      PaymentPage.cardNumberInput.type("4111111111111111");
+      PaymentPage.cvcInput.type("123");
+      PaymentPage.expiryMonthInput.type("12");
+      PaymentPage.expiryYearInput.type("25");
 
-
-      cy.get(`[data-qa="pay-button"]`).click();
-      cy.get(`[data-qa="order-placed"]`).should("contain.text", "Order Placed!");
+      PaymentPage.payButton.click();
+      PaymentPage.orderPlacedMessage.should("contain.text", "Order Placed!");
       cy.contains("Congratulations! Your order has been confirmed!").should("be.visible");
 
       LoginPage.deleteAccountButton.click();
