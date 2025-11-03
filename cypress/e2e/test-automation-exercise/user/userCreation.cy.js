@@ -4,6 +4,8 @@ import { HomePage } from "../../../support/page-objects/homePage";
 import { LoginPage } from "../../../support/page-objects/loginPage";
 import { ContactUsPage } from "../../../support/page-objects/contactUsPage";
 import { ProductPage } from "../../../support/page-objects/productPage";
+import { ModalPage } from "../../../support/page-objects/modalPage";
+import { CheckoutPage } from "../../../support/page-objects/checkoutPage";
 
 let userData = {};
 
@@ -155,7 +157,7 @@ describe("Automation Exercise", () => {
      HomePage.successSubscriptionMessage.should("be.visible");
   });
 
-  it("Test Case 15: Place Order: Register before Checkout", () => {
+  it.only("Test Case 15: Place Order: Register before Checkout", () => {
     cy.visit("/");
     loginWithExistentUser(userData);
 
@@ -164,10 +166,11 @@ describe("Automation Exercise", () => {
       ProductPage.searchProductInput.type(menTshirt.name);
       ProductPage.submitSearch.click();
       ProductPage.addToCartButtonByProductId(menTshirt.id).first().scrollIntoView().click();
-      cy.get(`#cartModal`).should("be.visible");
-      cy.contains("View Cart").click();
-      cy.get(`.check_out`).click();
-      
+      ModalPage.cartModal.should("be.visible");
+      ModalPage.viewCartButton.click();
+      cy.pause();
+      CheckoutPage.checkoutButton.click();
+
       //verify address details
       cy.get(`#address_delivery`).within(() => {
         cy.get(".address_firstname").should("contain.text", userData.firstName);
