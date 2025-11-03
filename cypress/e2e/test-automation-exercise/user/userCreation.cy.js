@@ -91,9 +91,7 @@ describe("Automation Exercise", () => {
   it("Test Case 4: Logout User", () => {
     cy.visit("/");
     loginWithExistentUser(userData);
-
-    HomePage.logoutButton.click();
-    cy.contains("Login to your account").should("be.visible");
+    deleteLoggedAccount();
   });
 
   it("Test Case 5: Register User with existing email", () => {
@@ -204,9 +202,7 @@ describe("Automation Exercise", () => {
       PaymentPage.orderPlacedMessage.should("contain.text", "Order Placed!");
       cy.contains("Congratulations! Your order has been confirmed!").should("be.visible");
 
-      LoginPage.deleteAccountButton.click();
-      cy.contains("Account Deleted!").should("be.visible");
-      LoginPage.continueButton.should("be.visible");
+      deleteLoggedAccount();
     });
   });
 });
@@ -219,4 +215,10 @@ const loginWithExistentUser = (user) => {
   LoginPage.loginPasswordInput.type(user.password, { log: false });
   LoginPage.loginButton.click();
   cy.get("a b").should("contain.text", `${user.name}`);
+}
+
+const deleteLoggedAccount = () => {
+  LoginPage.deleteAccountButton.click();
+      cy.contains("Account Deleted!").should("be.visible");
+      LoginPage.continueButton.should("be.visible");
 }
