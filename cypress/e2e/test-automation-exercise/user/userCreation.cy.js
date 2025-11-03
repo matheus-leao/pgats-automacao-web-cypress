@@ -147,13 +147,13 @@ describe("Automation Exercise", () => {
       ProductPage.verifyProductDetails(menTshirt);
     });
   });
-  
+
   it("Test Case 10: Verify Subscription in home page", () => {
-     cy.visit("/");
-     cy.get("#footer").scrollIntoView();
-     HomePage.subscriptionInput.type(faker.internet.email());
-     HomePage.subscriptionButton.click();
-     HomePage.successSubscriptionMessage.should("be.visible");
+    cy.visit("/");
+    cy.get("#footer").scrollIntoView();
+    HomePage.subscriptionInput.type(faker.internet.email());
+    HomePage.subscriptionButton.click();
+    HomePage.successSubscriptionMessage.should("be.visible");
   });
 
   it("Test Case 15: Place Order: Register before Checkout", () => {
@@ -164,30 +164,41 @@ describe("Automation Exercise", () => {
     cy.fixture("product/menTshirt.json").then((menTshirt) => {
       ProductPage.searchProductInput.type(menTshirt.name);
       ProductPage.submitSearch.click();
-      ProductPage.addToCartButtonByProductId(menTshirt.id).first().scrollIntoView().click();
+      ProductPage.addToCartButtonByProductId(menTshirt.id)
+        .first()
+        .scrollIntoView()
+        .click();
       ModalPage.cartModal.should("be.visible");
       ModalPage.viewCartButton.click();
       CheckoutPage.checkoutButton.click();
 
       //verify address details
       CheckoutPage.addressDetailsSection.within(() => {
-        CheckoutPage.addressFirstName.should("contain.text", userData.firstName);
+        CheckoutPage.addressFirstName.should(
+          "contain.text",
+          userData.firstName,
+        );
         CheckoutPage.addressLastName.should("contain.text", userData.lastName);
         CheckoutPage.address1.should("contain.text", userData.address);
         CheckoutPage.address2.should("contain.text", userData.address2);
         CheckoutPage.addressCity.should("contain.text", userData.city);
         CheckoutPage.addressStateName.should("contain.text", userData.state);
-        CheckoutPage.addressCountryName.should("contain.text", userData.country);
+        CheckoutPage.addressCountryName.should(
+          "contain.text",
+          userData.country,
+        );
         CheckoutPage.addressPostcode.should("contain.text", userData.zipcode);
         CheckoutPage.addressPhone.should("contain.text", userData.mobileNumber);
       });
 
-      //order details 
+      //order details
       CheckoutPage.orderDetailTitle.should("contain.text", "Review Your Order");
       CheckoutPage.cartInfo.should("contain.text", "Total Amount");
       CheckoutPage.cartTotalPrice.should("contain.text", menTshirt.price);
 
-      CheckoutPage.orderMessageTextarea.type("Please deliver between 9 AM to 5 PM");
+      CheckoutPage.orderMessageTextarea.type(
+        "Please deliver between 9 AM to 5 PM",
+      );
       CheckoutPage.checkoutButton.click();
 
       PaymentPage.paymentTitle.should("contain.text", "Payment");
@@ -200,13 +211,14 @@ describe("Automation Exercise", () => {
 
       PaymentPage.payButton.click();
       PaymentPage.orderPlacedMessage.should("contain.text", "Order Placed!");
-      cy.contains("Congratulations! Your order has been confirmed!").should("be.visible");
+      cy.contains("Congratulations! Your order has been confirmed!").should(
+        "be.visible",
+      );
 
       deleteLoggedAccount();
     });
   });
 });
-
 
 const loginWithExistentUser = (user) => {
   HomePage.loginButton.click();
@@ -215,10 +227,10 @@ const loginWithExistentUser = (user) => {
   LoginPage.loginPasswordInput.type(user.password, { log: false });
   LoginPage.loginButton.click();
   cy.get("a b").should("contain.text", `${user.name}`);
-}
+};
 
 const deleteLoggedAccount = () => {
   LoginPage.deleteAccountButton.click();
-      cy.contains("Account Deleted!").should("be.visible");
-      LoginPage.continueButton.should("be.visible");
-}
+  cy.contains("Account Deleted!").should("be.visible");
+  LoginPage.continueButton.should("be.visible");
+};

@@ -30,5 +30,4 @@ export class HomePage {
   static get successSubscriptionMessage() {
     return cy.get(".alert-success");
   }
-  
 }
