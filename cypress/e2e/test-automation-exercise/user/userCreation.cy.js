@@ -155,7 +155,7 @@ describe("Automation Exercise", () => {
      HomePage.successSubscriptionMessage.should("be.visible");
   });
 
-  it.only("Test Case 15: Place Order: Register before Checkout", () => {
+  it("Test Case 15: Place Order: Register before Checkout", () => {
     cy.visit("/");
     loginWithExistentUser(userData);
 
@@ -169,26 +169,42 @@ describe("Automation Exercise", () => {
       cy.get(`.check_out`).click();
       
       //verify address details
-      cy.get(`.address_delivery`).within(() => {
+      cy.get(`#address_delivery`).within(() => {
         cy.get(".address_firstname").should("contain.text", userData.firstName);
         cy.get(".address_lastname").should("contain.text", userData.lastName);
         cy.get(".address_address1").should("contain.text", userData.address);
         cy.get(".address_address2").should("contain.text", userData.address2);
         cy.get(".address_city").should("contain.text", userData.city);
-        cy.get(".address_state").should("contain.text", userData.state);
-        cy.get(".address_country").should("contain.text", userData.country);
-        cy.get(".address_zipcode").should("contain.text", userData.zipcode);
-        cy.get(".address_mobile").should("contain.text", userData.mobileNumber);
+        cy.get(".address_state_name").should("contain.text", userData.state);
+        cy.get(".address_country_name").should("contain.text", userData.country);
+        cy.get(".address_postcode").should("contain.text", userData.zipcode);
+        cy.get(".address_phone").should("contain.text", userData.mobileNumber);
       });
 
       //order details   
+      cy.get(`h2.heading`).should("contain.text", "Review Your Order");
+      cy.get(`#cart_info`).should("contain.text", "Total Amount")
+      cy.get(`#cart_info`).find('.cart_total_price').should("contain.text", menTshirt.price)
 
-//       13. Enter description in comment text area and click 'Place Order'
-      // 14. Enter payment details: Name on Card, Card Number, CVC, Expiration date
-      // 15. Click 'Pay and Confirm Order' button
-      // 16. Verify success message 'Your order has been placed successfully!'
-      // 17. Click 'Delete Account' button
-      // 18. Verify 'ACCOUNT DELETED!' and click 'Continue' button
+      cy.get(`#ordermsg textarea`).type("Please deliver between 9 AM to 5 PM");
+      cy.get(`a.check_out`).click();
+
+      cy.get(`.heading`).should("contain.text", "Payment");
+
+      cy.get(`[data-qa="name-on-card"]`).type("John Doe");
+      cy.get(`[data-qa="card-number"]`).type("4111111111111111");
+      cy.get(`[data-qa="cvc"]`).type("123");
+      cy.get(`[data-qa="expiry-month"]`).type("12");
+      cy.get(`[data-qa="expiry-year"]`).type("25");
+
+
+      cy.get(`[data-qa="pay-button"]`).click();
+      cy.get(`[data-qa="order-placed"]`).should("contain.text", "Order Placed!");
+      cy.contains("Congratulations! Your order has been confirmed!").should("be.visible");
+
+      LoginPage.deleteAccountButton.click();
+      cy.contains("Account Deleted!").should("be.visible");
+      LoginPage.continueButton.should("be.visible");
     });
   });
 });
