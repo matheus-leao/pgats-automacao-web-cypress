@@ -172,25 +172,25 @@ describe("Automation Exercise", () => {
       CheckoutPage.checkoutButton.click();
 
       //verify address details
-      cy.get(`#address_delivery`).within(() => {
-        cy.get(".address_firstname").should("contain.text", userData.firstName);
-        cy.get(".address_lastname").should("contain.text", userData.lastName);
-        cy.get(".address_address1").should("contain.text", userData.address);
-        cy.get(".address_address2").should("contain.text", userData.address2);
-        cy.get(".address_city").should("contain.text", userData.city);
-        cy.get(".address_state_name").should("contain.text", userData.state);
-        cy.get(".address_country_name").should("contain.text", userData.country);
-        cy.get(".address_postcode").should("contain.text", userData.zipcode);
-        cy.get(".address_phone").should("contain.text", userData.mobileNumber);
+      CheckoutPage.addressDetailsSection.within(() => {
+        CheckoutPage.addressFirstName.should("contain.text", userData.firstName);
+        CheckoutPage.addressLastName.should("contain.text", userData.lastName);
+        CheckoutPage.address1.should("contain.text", userData.address);
+        CheckoutPage.address2.should("contain.text", userData.address2);
+        CheckoutPage.addressCity.should("contain.text", userData.city);
+        CheckoutPage.addressStateName.should("contain.text", userData.state);
+        CheckoutPage.addressCountryName.should("contain.text", userData.country);
+        CheckoutPage.addressPostcode.should("contain.text", userData.zipcode);
+        CheckoutPage.addressPhone.should("contain.text", userData.mobileNumber);
       });
 
-      //order details   
-      cy.get(`h2.heading`).should("contain.text", "Review Your Order");
-      cy.get(`#cart_info`).should("contain.text", "Total Amount")
-      cy.get(`#cart_info`).find('.cart_total_price').should("contain.text", menTshirt.price)
+      //order details 
+      CheckoutPage.orderDetailTitle.should("contain.text", "Review Your Order");
+      CheckoutPage.cartInfo.should("contain.text", "Total Amount");
+      CheckoutPage.cartTotalPrice.should("contain.text", menTshirt.price);
 
-      cy.get(`#ordermsg textarea`).type("Please deliver between 9 AM to 5 PM");
-      cy.get(`a.check_out`).click();
+      CheckoutPage.orderMessageTextarea.type("Please deliver between 9 AM to 5 PM");
+      CheckoutPage.checkoutButton.click();
 
       cy.get(`.heading`).should("contain.text", "Payment");
 
